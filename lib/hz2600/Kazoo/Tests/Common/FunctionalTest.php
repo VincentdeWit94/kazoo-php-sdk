@@ -46,4 +46,10 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
     public function testVerify() {
         $this->assertTrue(TRUE);
     }
+
+    public function compareJson($a, $b) {
+        $a = array_map('serialize', json_decode($a, TRUE));
+        $b = array_map('serialize', json_decode($b, TRUE));
+        return array_map('unserialize', array_diff($a, $b));
+    }
 }

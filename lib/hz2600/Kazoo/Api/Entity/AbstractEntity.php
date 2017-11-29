@@ -37,6 +37,17 @@ abstract class AbstractEntity extends AbstractResource
      *
      *
      */
+    protected $hydrate = TRUE;
+
+    public function setHydrate($value) {
+        $this->hydrate = $value;
+        return $this;
+    }
+
+    /**
+     *
+     *
+     */
     public function __construct(ChainableInterface $chain, array $arguments = array()) {
         parent::__construct($chain, $arguments);
         $this->invoke($arguments);
@@ -98,16 +109,11 @@ abstract class AbstractEntity extends AbstractResource
             throw new ReadOnly("The entity is read-only");
         }
 
-        if(is_null($this->entity)) {
-            $id = $this->getId();
-            if (!empty($id)) {
-                $this->fetch();
-            } else {
-                $this->setEntity(new stdClass);
-            }
-        }
+        $entity = $this->getEntity();
 
-        $this->entity->$name = $value;
+        $entity->$name = $value;
+
+        $this->entity = $entity;
     }
 
     /**
@@ -115,12 +121,7 @@ abstract class AbstractEntity extends AbstractResource
      *
      */
     public function &__get($name) {
-        $id = $this->getId();
-        if(is_null($this->entity) && !empty($id)) {
-            $this->fetch();
-        }
-
-        return $this->entity->$name;
+        return $this->getEntity()->$name;
     }
 
     /**
@@ -128,7 +129,7 @@ abstract class AbstractEntity extends AbstractResource
      *
      */
     public function __isset($name) {
-        return isset($this->entity->$name);
+        return isset($this->getEntity()->$name);
     }
 
     /**
@@ -205,7 +206,7 @@ abstract class AbstractEntity extends AbstractResource
 
         $this->setTokenValue($this->getEntityIdName(), $id);
 
-        if (empty($id)) {
+        if (empty($id) || !$this->hydrate) {
             $response = $this->put($payload, $append_uri);
         } else {
             $response = $this->post($payload, $append_uri);
@@ -234,7 +235,6 @@ abstract class AbstractEntity extends AbstractResource
 
         return $this;
     }
-
 
     /**
      * Remove the entity.  Note: it is called remove
@@ -360,11 +360,13 @@ abstract class AbstractEntity extends AbstractResource
      *
      */
     protected function getEntity() {
-        $id = $this->getId();
-        if(is_null($this->entity) && !empty($id)) {
-            $this->fetch();
+        $this->maybeHydrate();
+
+        if (is_null($this->entity)) {
+            return new stdClass();
         }
-        return ($this->entity ?: new stdClass);
+
+        return $this->entity;
     }
 
     /**
@@ -411,6 +413,22 @@ abstract class AbstractEntity extends AbstractResource
      */
     protected function readOnly() {
         $this->read_only = TRUE;
+    }
+
+    /**
+     *
+     *
+     */
+    protected function maybeHydrate() {
+        if(is_null($this->entity)) {
+            $id = $this->getId();
+            if(!empty($id) && $this->hydrate) {
+                $this->fetch();
+                return TRUE;
+            }
+        }
+
+        return FALSE;
     }
 
     // auto-create nodes for this->k1->k2->k3 = v1
