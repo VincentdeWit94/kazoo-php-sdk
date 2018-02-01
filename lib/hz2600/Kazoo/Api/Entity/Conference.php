@@ -2,7 +2,6 @@
 
 namespace Kazoo\Api\Entity;
 
-
 class Conference extends AbstractEntity
 {
     /**
@@ -13,7 +12,7 @@ class Conference extends AbstractEntity
      * @param string|object $endpoint The endpoint to dial out to
      * @param stdClass|null $data Additional settings on the dial command
      */
-    public function dial($endpoint, $data=null) {
+    public function dial($endpoint, $data = null) {
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
 
         $payload = new \stdClass;
