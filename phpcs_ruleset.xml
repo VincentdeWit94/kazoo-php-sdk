@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<ruleset name="Kazoo PHP SDK Standard" namespace="Kazoo\PHPSDK">
+  <description>The Kazoo PHP SDK coding standard</description>
+  <rule ref="PSR2"/>
+</ruleset>
