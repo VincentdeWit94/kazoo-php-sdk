@@ -1,14 +1,21 @@
 ROOT = $(shell readlink -f .)
 
-.PHONY = fmt
+.PHONY = fmt set-defaults
 
 CHANGED ?= $(shell git --no-pager diff --name-only HEAD origin/master -- *.php)
 
 FORMATTER ?= ./vendor/bin/phpcbf
+CHECKER ?= ./vendor/bin/phpcs
 
 fmt: $(FORMATTER)
-	$(FORMATTER) --standard=$(ROOT)/phpcs_ruleset.xml --config-set default_standard PSR1 $(CHANGED)
+	@$(FORMATTER) $(CHANGED)
 
 $(FORMATTER):
 	@$(ROOT)/composer update
-	phpcs --config-set default_standard PSR
+	@$(MAKE) set-defaults
+
+set-defaults:
+	@$(CHECKER) --config-set default_standard PSR1
+	@$(CHECKER) --config-set report_format summary
+	@$(CHECKER) --config-set colors 1
+	@$(CHECKER) --config-set tab_width 4
