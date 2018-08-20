@@ -15,8 +15,8 @@
             "Kazoo": "lib/hz2600"
         }
     },
-    "description": "Description of project kazoo-php-sdk.",
-    "homepage": "http://github.com/2600hz/kazoo-php-sdk",
+    "description": "Kazoo PHP SDK (updated)",
+    "homepage": "http://github.com/VincentdeWit/kazoo-php-sdk",
     "keywords": [
         "kazoo",
         "sip",
@@ -26,7 +26,7 @@
     ],
     "license": "MIT",
     "minimum-stability": "stable",
-    "name": "2600hz/kazoo-php-sdk",
+    "name": "VincentdeWit/kazoo-php-sdk",
     "preferred-install": "dist",
     "require": {
         "ext-curl": "*",
