@@ -26,7 +26,7 @@
     ],
     "license": "MIT",
     "minimum-stability": "stable",
-    "name": "VincentdeWit/kazoo-php-sdk",
+    "name": "vincentdewit/kazoo-php-sdk",
     "preferred-install": "dist",
     "require": {
         "ext-curl": "*",
