@@ -13,6 +13,7 @@ use \Kazoo\Api\Exception\RateLimit;
 
 class FunctionalTest extends \PHPUnit_Framework_TestCase
 {
+
     private $sdk;
 
     public function setUp() {

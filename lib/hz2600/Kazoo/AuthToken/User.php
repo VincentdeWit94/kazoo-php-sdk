@@ -37,6 +37,12 @@ class User implements AuthTokenInterface
 
     /**
      *
+     * @var string
+     */
+    private $accountName;
+
+    /**
+     *
      * @var null|stdClass
      */
     private $auth_response = null;
@@ -53,11 +59,12 @@ class User implements AuthTokenInterface
      * @param string $password
      * @param string $sipRealm
      */
-    public function __construct($username, $password, $sipRealm) {
+    public function __construct($username, $password, $sipRealm, $accountName) {
         @session_start();
         $this->username = $username;
         $this->password = $password;
         $this->sipRealm = $sipRealm;
+        $this->accountName = $accountName;
     }
 
     /**
@@ -169,7 +176,11 @@ class User implements AuthTokenInterface
         $payload = new stdClass();
         $payload->data = new stdClass();
         $payload->data->credentials = md5($this->username . ":" . $this->password);
-        $payload->data->realm = $this->sipRealm;
+        if (isset($this->sipRealm)) {
+            $payload->data->realm = $this->sipRealm;
+        } else if (isset($this->accountName)) {
+            $payload->data->account_name = $this->accountName;
+        }
 
         $sdk = $this->getSDK();
         $tokenizedUri = $sdk->getTokenizedUri($sdk->getTokenUri() . "/user_auth");
