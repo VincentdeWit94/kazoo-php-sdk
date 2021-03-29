@@ -9,7 +9,7 @@ class Log
 {
     /**
      *
-     * @var \Monolog\Logger
+     * @var Logger
      */
     private static $logger;
 
@@ -25,11 +25,11 @@ class Log
     }
 
     public static function addWarning($message) {
-        self::getLogger()->addWarning($message);
+        self::getLogger()->warning($message);
     }
 
     public static function addCritical($message) {
-        self::getLogger()->addCritical($message());
+        self::getLogger()->critical($message);
     }
 
     private static function getLoggerHandler() {

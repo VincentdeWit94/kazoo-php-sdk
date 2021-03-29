@@ -11,3 +11,8 @@ lib/hz2600/Kazoo/Tests/phpunit.xml
 docs/mkdocs/docs
 /docs/mkdocs/mkdocs.local
 docs/mkdocs/site
+.idea/kazoo-php-sdk.iml
+.idea/modules.xml
+.idea/php.xml
+.idea/vcs.xml
+.idea/workspace.xml
